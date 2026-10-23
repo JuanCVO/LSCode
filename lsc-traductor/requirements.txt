@@ -1,0 +1,105 @@
+# =============================================================================
+# Traductor LSC - dependencias del proyecto
+# Entorno: Windows 10 (64 bits), Python 3.12.10, solo CPU (sin GPU)
+# Versiones resueltas con pip el 2026-10-22; todas probadas juntas.
+#
+# INSTALACION (ejecutar DENTRO de la carpeta lsc-traductor, y con --no-deps):
+#   py -3.12 -m venv venv
+#   venv\Scripts\Activate.ps1
+#   pip install --no-deps -r requirements.txt
+#
+# Por que --no-deps: tensorflowjs 4.22.0 declara dos dependencias que en
+# Windows no se pueden instalar bien y que este proyecto no usa:
+#   - tensorflow-decision-forests: no existe para Windows. Se reemplaza por un
+#     paquete vacio (carpeta vendor/), solo para que `import tensorflowjs`
+#     no falle.
+#   - flax: arrastra orbax-checkpoint, cuyas carpetas de prueba superan el
+#     limite de 260 caracteres de rutas de Windows y rompen la instalacion.
+#     Solo sirve para convertir modelos de JAX; omitirla no afecta a Keras.
+# Este archivo trae TODAS las demas dependencias con version exacta, asi que
+# pip no necesita resolver nada. Consecuencia: `pip check` avisara de que
+# tensorflowjs "requires flax, which is not installed"; es esperado.
+#
+# Por que Python 3.12 y no 3.14: TensorFlow 2.21 solo publica instaladores
+# para Python 3.10 a 3.13.
+# =============================================================================
+
+# --- Las 7 librerias principales ---------------------------------------------
+# TensorFlow: en Windows el paquete normal ya es solo CPU (no hace falta
+# tensorflow-cpu, y chocaria con tensorflowjs, que pide "tensorflow").
+tensorflow==2.21.0
+# MediaPipe: deteccion de la mano y sus 21 puntos.
+mediapipe==1.1.1
+# OpenCV: se usa opencv-contrib-python en lugar de opencv-python porque
+# MediaPipe lo exige y ambos paquetes instalan el mismo modulo (import cv2);
+# no deben convivir. El contrib incluye todo lo de opencv-python.
+# Se fija la serie 4.x (la 5.0 es muy reciente).
+opencv-contrib-python==4.14.0.94
+numpy==2.5.4
+scikit-learn==1.9.1
+matplotlib==3.11.2
+# Conversor de modelos Keras a TensorFlow.js (para correr en el navegador).
+# OJO: los modelos que iran al navegador deben guardarse con Keras "legacy":
+# definir TF_USE_LEGACY_KERAS=1 ANTES de importar tensorflow. Con el Keras 3
+# por defecto, el model.json sale con "batch_shape" y TensorFlow.js 4.22 no lo
+# carga (probado: "An InputLayer should be passed either a batchInputShape...").
+tensorflowjs==4.22.0
+
+# --- Reemplazo vacio de tensorflow-decision-forests (ver vendor/) -------------
+# Ruta relativa: por eso hay que ejecutar pip dentro de lsc-traductor.
+./vendor/tensorflow_decision_forests_stub
+
+# --- Dependencias que arrastran las anteriores (fijadas para reproducir) -----
+absl-py==2.5.1
+astunparse==1.6.3
+certifi==2026.10.19
+cffi==2.1.1
+charset-normalizer==3.5.2
+cloudpickle==3.1.2
+contourpy==1.4.0
+cycler==0.12.1
+flatbuffers==25.12.19
+fonttools==4.67.0
+gast==0.7.0
+google-pasta==0.2.0
+grpcio==1.84.1
+h5py==3.14.0
+idna==3.20
+importlib_resources==7.1.0
+jax==0.12.0.1
+jaxlib==0.12.0.1
+joblib==1.6.0
+keras==3.15.1
+kiwisolver==1.5.1
+libclang==18.1.1
+markdown-it-py==4.2.0
+mdurl==0.1.2
+ml_dtypes==0.6.0
+namex==0.1.0
+narwhals==2.27.1
+opt_einsum==3.4.0
+optree==0.20.0
+packaging==23.2
+pillow==13.0.0
+protobuf==7.36.2
+pycparser==3.12
+Pygments==2.21.0
+pyparsing==3.3.3
+python-dateutil==3.0.0
+requests==2.34.2
+rich==15.0.0
+scipy==1.18.1
+# setuptools: se fija la 80.9.0 porque tensorflow-hub 0.16.1 todavia hace
+# `from pkg_resources import ...` y las versiones nuevas ya no lo incluyen.
+setuptools==80.9.0
+six==1.17.0
+sounddevice==0.5.6
+tensorflow-hub==0.16.1
+termcolor==3.3.0
+tf_keras==2.21.0
+threadpoolctl==3.7.0
+typing_extensions==4.16.0
+tzdata==2026.5
+urllib3==2.8.0
+wheel==0.45.1
+wrapt==2.5.1

@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tensorflow-decision-forests"
+version = "1.12.0+stub"
+description = "Reemplazo vacio (stub) para Windows: solo permite 'import tensorflow_decision_forests', que tensorflowjs exige al arrancar."
+requires-python = ">=3.9"
+
+[tool.setuptools]
+packages = ["tensorflow_decision_forests"]

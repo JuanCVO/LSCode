@@ -39,3 +39,32 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ---------------------------------------------------------------------------
+# Python (carpeta lsc-traductor/)
+# ---------------------------------------------------------------------------
+
+# Entorno virtual: no se sube; se recrea con requirements.txt (ver README)
+venv/
+.venv/
+
+# Cache y archivos que genera Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Dataset de imagenes del alfabeto: pesa y tiene su propia licencia; se
+# descarga aparte (ver README)
+lsc-traductor/datasets/
+
+# Modelo de manos de MediaPipe: lo descarga solo test_setup.py
+lsc-traductor/modelos/hand_landmarker.task
+
+# Archivos que genera pip al construir el paquete local de vendor/
+lsc-traductor/vendor/**/build/
+lsc-traductor/vendor/**/*.egg-info/
+
+# Sistema operativo (Windows)
+Thumbs.db
+desktop.ini
